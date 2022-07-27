@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateVisitorDto } from './dto/create-visitor.dto';
 import { UpdateVisitorDto } from './dto/update-visitor.dto';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 
 @Injectable()
 export class VisitorsService {
@@ -11,6 +11,14 @@ export class VisitorsService {
     @InjectModel(Visitor.name)
     private visitorModel: Model<VisitorDocument>,
   ) {}
+
+  find(options: FilterQuery<VisitorDocument>) {
+    return this.visitorModel.find(options);
+  }
+
+  count(options) {
+    return this.visitorModel.count(options).exec();
+  }
 
   create(createVisitorDto: CreateVisitorDto) {
     const visitor = new this.visitorModel(createVisitorDto);
